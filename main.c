@@ -17,17 +17,38 @@ struct stack *top = NULL;
 
 int main()
 {
-    int i;
+    int i, ch;
     printf("--> ");
-    scanf(" %d", &i);
-    while(i != '=')
+    //scanf(" %d", &i);
+
+    while((ch = getchar()) != '=')
     {
-        if(i == '*' || i == '+' ||)
-        
-        
-        scanf(" %d", &i);
+        if(ch == '*' || ch == '+' || ch == '-' || ch == '/')
+        {
+            int temp = pop();
+            switch(ch)
+            {
+                case '+':   {temp += pop(); push(temp);}
+                            break;
+                case '-':   {temp -= pop(); push(temp);}
+                            break;
+                case '*':   {temp *= pop(); push(temp);}
+                            break;
+                case '/':   {temp /= pop(); push(temp);}
+                            break;
+                default:    break;
+            }
+        }
+        else
+        {
+            ch -= 48;
+            push(ch);
+        }
     }
 
+    if(ch == '=')
+        printf("\nSum is: %d", top->n);
+/*
     while(i){
         scanf(" %d", &i);
 
@@ -38,6 +59,7 @@ int main()
         printf("%d", top->n);
         top = top->next;
     }
+*/
 
     return 0;
 }
