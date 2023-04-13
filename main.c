@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h> //c99
+#include <stdbool.h> //c99 ONLY
 
 /*Prototype*/
 bool push(int);
@@ -9,6 +9,7 @@ bool is_empty(void);
 void stack_underflow();
 void stack_overflow();
 
+/*External Variable*/
 struct stack{
     int n;
     struct stack *next;
@@ -17,38 +18,39 @@ struct stack *top = NULL;
 
 int main()
 {
-    int i, ch;
+    int ch;
+    printf("Enter mathematical expression\n" 
+           "(Ex. 1 2 3 - + = evaluates to 1+(2-3))\n");
     printf("--> ");
-    //scanf(" %d", &i);
 
     while((ch = getchar()) != '=')
     {
-        if(ch == '*' || ch == '+' || ch == '-' || ch == '/')
+        if(ch == ' ') continue;
+        else if(ch == '*' || ch == '+' || ch == '-' || ch == '/')
         {
             int temp = pop();
             switch(ch)
             {
-                case '+':   {temp += pop(); push(temp);}
+                case '+':   {push(pop() + temp);}
                             break;
-                case '-':   {temp -= pop(); push(temp);}
+                case '-':   {push(pop() - temp);}
                             break;
-                case '*':   {temp *= pop(); push(temp);}
+                case '*':   {push(pop() * temp);}
                             break;
-                case '/':   {temp /= pop(); push(temp);}
+                case '/':   {push(pop() / temp);}
                             break;
                 default:    break;
             }
         }
         else
-        {
-            ch -= 48;
-            push(ch);
-        }
+            push(ch -= 48);
     }
 
     if(ch == '=')
         printf("\nSum is: %d", top->n);
-/*
+    return 0;
+
+/*  DEBUG
     while(i){
         scanf(" %d", &i);
 
@@ -59,9 +61,8 @@ int main()
         printf("%d", top->n);
         top = top->next;
     }
-*/
-
-    return 0;
+    DEBUG
+*/  
 }
 
 bool push(int n)
@@ -74,7 +75,6 @@ bool push(int n)
     temp->n = n;
     temp->next = top;
     top = temp;
-    //free(temp);
 
     return true;
 }
@@ -82,13 +82,13 @@ bool push(int n)
 int pop(void)
 {
     int temp;
-    struct stack *s_temp;
+    struct stack *temp_node;
     if(is_empty())
         stack_underflow();
-    s_temp = top;
+    temp_node = top;
     temp = top->n;
     top = top->next;
-    free(s_temp);
+    free(temp_node);
     return temp;
 }
 
