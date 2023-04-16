@@ -1,4 +1,4 @@
-# rpm-calculator
+# rpn-calculator
 
 A terminal-based RPN calculator written in C with an infinite stack implemented by a linked list. You can compile the code by typing: gcc -std=c99 -o rpm main.c
 
